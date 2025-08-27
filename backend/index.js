@@ -9,9 +9,6 @@ connectDB();
 const app = express(); //create the server instance
 const PORT = process.env.PORT || 3000;
 
-/////VARIABLES////
-const tasks = []
-let nextId = 1;
 
 
 //add a route:
@@ -26,6 +23,8 @@ app.listen(PORT, () => {
 //apply middleware:
 app.use(express.json())
 
+//import Task model:
+const Task = require('./models/Task');
 
 
 //GET request - return tasks array, from the backend to the frontend
@@ -35,16 +34,17 @@ app.get('/task', (req, res) => {
 
 //test post request - we use POST bc the user is creating new data (task)
 //make a task object
-//push it to the array
-app.post('/task', (req, res) => {
-  let task = { //make object
-    id: nextId,
-    content: req.body.content,
-    done: false,
+//save it to our DB
+app.post('/task', async (req, res) => {
+  try {
+    const newTask = new Task({
+      content: req.body.content,
+    });
+    await newTask.save(); //save to DB
+    res.status(201).json(newTask); //send it back as a response
+  } catch (err) {
+    res.status(500).json({message: 'failed to create task', error: err.message});
   }
-  tasks.push(task); //add to array
-  res.status(200).send(task);
-  nextId++;
 });
 
 //delete a task - DELETE:
