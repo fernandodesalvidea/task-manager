@@ -1,6 +1,5 @@
 const express = require('express'); //import library to use express
 const dotenv = require('dotenv'); //import db
-const connect = require('./config/db');
 const connectDB = require('./config/db');
 
 //DATABASE CONNECTION ---------------------------
