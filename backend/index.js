@@ -1,6 +1,14 @@
 const express = require('express'); //import library to use express
+const dotenv = require('dotenv'); //import db
+const connect = require('./config/db');
+const connectDB = require('./config/db');
+
+//DATABASE CONNECTION ---------------------------
+dotenv.config()
+connectDB();
+
 const app = express(); //create the server instance
-const PORT = 3000;
+const PORT = process.env.PORT || 3000;
 
 /////VARIABLES////
 const tasks = []
