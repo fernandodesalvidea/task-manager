@@ -67,30 +67,23 @@ app.delete('/task:id', async (req, res) => {
   catch(err){
     res.status(500).json({message: 'failed to create task', error: err.message});
   }
-});
-
-
+})
 
 //edit a task - PUT:
-app.put('/task/:id', (req, res) => {
-let found = false;
-  let {id} = req.params;
+app.put('/task/:id', async (req, res) => {
   let {content, done} = req.body;
-  for(let i = 0; i < tasks.length; i++){
-    if(tasks[i].id === Number(id)){ //find task
-      found = true;
-      if(content != undefined){
-        tasks[i].content = content;
+  try {
+      const foundTask = await Task.findById(req.params.id);
+      if(!foundTask){
+        return res.status(404).send('not found');
       }
-      if(done != undefined){
-        tasks[i].done = done;
-      }
-      break;
+      if(content !== undefined){foundTask.content = content}
+      if(done !== undefined){foundTask.done = done}
+      await foundTask.save();//save to our DB
+      res.status(201).json(foundTask); //send updated task back to the client
     }
+    catch (err) {
+    res.status(400).json({message: 'failed to edit task', error: err.message});
   }
-  if(found)
-    res.status(200).send('task modified');
-  else
-    res.status(404).send('ERROR task not found');
 });
 
