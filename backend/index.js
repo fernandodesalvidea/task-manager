@@ -55,21 +55,21 @@ app.post('/task', async (req, res) => {
 });
 
 //delete a task - DELETE:
-app.delete('/task/:id', (req, res) => {
-  let found = false;
-  let {id} = req.params;
-  for(let i = 0; i < tasks.length; i++){
-    if(tasks[i].id === Number(id)){ //find task
-      found = true;
-      tasks.splice(i, 1) //delete i
-      break;
+app.delete('/task:id', async (req, res) => {
+  try{
+    const deletedTask = await Task.findByIdAndDelete(req.params.id);
+    if(!deletedTask){
+      return res.status(404).send('not found');
     }
+    res.send('task deleted');
+    res.status(400).send('Invalid ID');
   }
-  if(found)
-    res.status(200).send('task deleted');
-  else
-    res.status(404).send('ERROR task not found');
+  catch(err){
+    res.status(500).json({message: 'failed to create task', error: err.message});
+  }
 });
+
+
 
 //edit a task - PUT:
 app.put('/task/:id', (req, res) => {
