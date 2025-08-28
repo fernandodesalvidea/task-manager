@@ -2,8 +2,18 @@ import './App.css';
 import React from 'react';
 import Header from "./components/Header";
 import TaskList from './components/TaskList';
+import { useState } from 'react';
+import Task from './components/Task';
 
-const tasks = [
+
+export default function App(){
+
+  function addTask(){
+    const newTask = {content: "new task", id:Date.now()};
+    setTask([...tasks, newTask]);
+  }
+
+  const [tasks, setTask] = useState([
   {
     content: "do groceries",
     id: 123123123
@@ -20,16 +30,14 @@ const tasks = [
     content: "date night",
     id: 23423432
   },
-]
-
-export default function App(){
+]);
   return (
     <section>
       <Header />
       <div className='container'>
         <TaskList tasks = {tasks}/>
       </div>
-      <button type='button' id='add'>New Task</button>
+      <button type='button' id='add' onClick={addTask}>New Task</button>
     </section>
   )
 }
