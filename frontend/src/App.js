@@ -9,9 +9,10 @@ function addTask(){
 }
 
 
-
 export default function App(){
   return (
-    <Header />
+    <section>
+      <Header />
+    </section>
   )
 }

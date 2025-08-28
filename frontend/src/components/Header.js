@@ -1,7 +1,9 @@
+import './Header.css';
+
 function Header(){
     return (
         <header>
-            <h1>Two Do</h1>
+            <h1>My Tasks</h1>
         </header>
     );
 }
