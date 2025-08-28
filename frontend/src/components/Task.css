@@ -1,8 +1,10 @@
 .task {
-    color: #23395b;
+    color: #FFFFFF;
     text-align: left;
     font-size: 2rem;
     padding: 8px;
     width: 400px;
-    border: 2px solid #23395b;
+    border: 2px solid #FFFFFF;
+    background-color: #59c9a5;
+    border-radius: 8px;
 }   

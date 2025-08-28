@@ -3,3 +3,9 @@ ul {
     padding: 0;
     text-decoration: none;
 }
+
+.tasks {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
