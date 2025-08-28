@@ -1,7 +1,17 @@
 import './App.css';
+import Task from './components/Task';
+import React from 'react';
+import { useState } from 'react';
+import Header from "./components/Header";
 
-function App(){
-  return <h1>Hello World</h1>
+function addTask(){
+  return
 }
 
-export default App
+
+
+export default function App(){
+  return (
+    <Header />
+  )
+}
