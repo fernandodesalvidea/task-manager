@@ -14,3 +14,13 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+button {
+  background: none;      /* remove default background */
+  border: none;          /* remove border */
+  padding: 0;            /* remove default padding */
+  font: inherit;         /* use parent font */
+  color: inherit;        /* inherit text color */
+  cursor: pointer;       /* show pointer on hover */
+}
+
