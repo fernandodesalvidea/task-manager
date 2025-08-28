@@ -4,13 +4,21 @@ import Header from "./components/Header";
 import TaskList from './components/TaskList';
 import { useState } from 'react';
 import Task from './components/Task';
+import { IoMdAdd } from "react-icons/io";
 
 
 export default function App(){
 
+
+   function fillTask(str){
+    setNewTaskContent(str);
+  }
+
   function addTask(){
-    const newTask = {content: "new task", id:Date.now()};
+    if(!newTaskContent) return;
+    const newTask = {content: newTaskContent, id:Date.now()};
     setTask([...tasks, newTask]);
+    setNewTaskContent(''); //clear text input
   }
 
   const [tasks, setTask] = useState([
@@ -31,13 +39,22 @@ export default function App(){
     id: 23423432
   },
 ]);
+
+const [newTaskContent, setNewTaskContent] = useState("");
   return (
     <section>
       <Header />
       <div className='container'>
         <TaskList tasks = {tasks}/>
       </div>
-      <button type='button' id='add' onClick={addTask}>New Task</button>
+      <div className='input-container'>
+        <input type='text'
+        placeholder='add your task...'
+        value={newTaskContent}
+        onChange={(e) => fillTask(e.target.value)}
+        />
+        <button type='button' id='add' onClick={addTask}><IoMdAdd /></button>
+      </div>
     </section>
   )
 }

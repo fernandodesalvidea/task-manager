@@ -5,6 +5,7 @@ import { FaTrashAlt } from "react-icons/fa";
 
 
 function Task({content}){
+
     return(
     <div className='task'>
         {content}

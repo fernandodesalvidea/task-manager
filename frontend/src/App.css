@@ -6,9 +6,26 @@ section {
 }
 #add{
     background-color: #b9e3c6;
-    padding: 20px;
+    padding: 10px;
 }
 #add:hover{
     filter: none;
     background-color: #fffd98;
 }
+
+.input-container{
+    display: flex;
+    gap: 10px;
+    border-color: #23395b;
+}
+input{
+    padding: 10px;
+    width: 300px;
+    font-size: 1rem;
+}
+input:focus {
+    outline: none;
+    cursor: text;
+    border-color: #23395b;
+}
+
