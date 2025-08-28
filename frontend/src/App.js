@@ -1,18 +1,16 @@
 import './App.css';
-import Task from './components/Task';
+import Task from './components/TaskList';
 import React from 'react';
 import { useState } from 'react';
 import Header from "./components/Header";
-
-function addTask(){
-  return
-}
+import TaskList from './components/TaskList';
 
 
 export default function App(){
   return (
     <section>
       <Header />
+      <TaskList />
     </section>
   )
 }
