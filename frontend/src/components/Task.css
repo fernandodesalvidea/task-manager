@@ -9,6 +9,7 @@
     border-radius: 8px;
     display: flex;
     justify-content: space-between;
+    align-items: center;
 }  
 
 button {
@@ -23,6 +24,8 @@ button {
     border: 1px solid #23395b;
     background-color: #b9e3c6;
     color: #23395b;
+    font-size: 1.2rem;
+    border-radius: 8px;
 }
 
 button:hover{

@@ -4,3 +4,11 @@ section {
     align-items: center;
     gap: 40px;
 }
+#add{
+    background-color: #b9e3c6;
+    padding: 20px;
+}
+#add:hover{
+    filter: none;
+    background-color: #fffd98;
+}
