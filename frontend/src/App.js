@@ -15,7 +15,7 @@ export default function App(){
   }
 
   function addTask(){
-    if(!newTaskContent) return;
+    if(!newTaskContent) return; //only press button if has content in it..
     const newTask = {content: newTaskContent, id:Date.now()};
     setTask([...tasks, newTask]);
     setNewTaskContent(''); //clear text input
@@ -34,10 +34,6 @@ export default function App(){
     content: "gym workout",
     id: 68680987,
   },
-  {
-    content: "date night",
-    id: 23423432
-  },
 ]);
 
 const [newTaskContent, setNewTaskContent] = useState("");
@@ -45,7 +41,7 @@ const [newTaskContent, setNewTaskContent] = useState("");
     <section>
       <Header />
       <div className='container'>
-        <TaskList tasks = {tasks}/>
+        <TaskList tasks = {tasks} onDelete={(id) => setTask(tasks.filter(t => t.id !== id))}/>
       </div>
       <div className='input-container'>
         <input type='text'
