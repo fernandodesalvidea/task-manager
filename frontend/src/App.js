@@ -5,6 +5,7 @@ import TaskList from './components/TaskList';
 import { useState } from 'react';
 import { IoMdAdd } from "react-icons/io";
 import ConfirmModal from './components/ConfirmModal';
+import EditModal from './components/EditModal';
 
 
 export default function App(){
@@ -36,10 +37,17 @@ export default function App(){
 ]);
 
 const [taskToDelete, setTaskToDelete] = useState(null); //set to null bc no task is selected for deletion
+const [taskToEdit, setTaskToEdit] = useState(null);
+const [editTaskContent, setEditTaskContent] = useState("");
 
 function handleDelete(id){
   setTask(tasks.filter(task => task.id !== id));
   setTaskToDelete(null);
+}
+
+function handleEdit(id, content){
+  setTask(tasks.map(t => t.id === id ? {...t, content} : t)); //replace content if found
+  setTaskToEdit(null);
 }
 
 const [newTaskContent, setNewTaskContent] = useState("");
@@ -51,6 +59,10 @@ const [newTaskContent, setNewTaskContent] = useState("");
         <TaskList
           tasks = {tasks}
           onDelete={(task) => setTaskToDelete(task)}
+          onEdit={(task)=>{
+            setTaskToEdit(task);
+            setNewTaskContent(task.content);
+          }}
         />
       </div>
       <div className='input-container'>
@@ -67,6 +79,21 @@ const [newTaskContent, setNewTaskContent] = useState("");
         onConfirm={() => handleDelete(taskToDelete.id)}
         onCancel={() => setTaskToDelete(null)}
         message="Are you sure?"
+      />
+    )}
+    {taskToEdit && (
+      <EditModal
+        onConfirm={()=> handleEdit(taskToEdit.id, editTaskContent)}
+        onCancel={() => setTaskToEdit(null)}
+        message={
+          <div>
+            <input type='text'
+            placeholder='edit your task'
+            value={editTaskContent}
+            onChange={e => setEditTaskContent(e.target.value)}
+          />
+          </div>
+        }
       />
     )}
     </>
