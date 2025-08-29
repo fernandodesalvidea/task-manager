@@ -78,7 +78,7 @@ const [newTaskContent, setNewTaskContent] = useState("");
       <ConfirmModal
         onConfirm={() => handleDelete(taskToDelete.id)}
         onCancel={() => setTaskToDelete(null)}
-        message="Are you sure?"
+        message="Are you sure you want to delete?"
       />
     )}
     {taskToEdit && (

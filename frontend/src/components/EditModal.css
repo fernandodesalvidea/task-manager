@@ -1,9 +1,9 @@
-.popup {
-    background-color: #d81e5b;
+#editpopup{
+    background-color: #b9e3c6;
     color: #FFFF;
     border: 1px solid #59c9a5;
 }
-.popup {
+#editpopup {
     font-size: 20px;
     position: fixed;
     top: 50%;
@@ -24,14 +24,18 @@
 
 .buttons {
     display: flex;
-    justify-content: space-between;
-}#yes {
+    justify-content: center;
+    gap: 10px;
+}
+#save {
     background-color: #59c9a5;
     border: 1px solid #FFFF;
+    color: #23395b;
     border-radius: 8px;
 }
-#no {
+#cancel {
     background-color: #d81e5b;
     border: 1px solid #FFFF;
     border-radius: 8px;
+    color: #FFFF;
 }

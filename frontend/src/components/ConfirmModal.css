@@ -1,9 +1,7 @@
-.popup {
+#confirmpopup{
     background-color: #d81e5b;
-    color: #FFFF;
-    border: 1px solid #59c9a5;
 }
-.popup {
+#confirmpopup {
     font-size: 20px;
     position: fixed;
     top: 50%;
@@ -11,7 +9,8 @@
     transform: translate(-50%, -50%); 
     text-align: center;
     z-index: 1000;
-    color: #FFF;
+    color: #23395b;
+    background-color: #FFFF;
     padding: 50px;
     border-radius: 12px;
 }
@@ -24,7 +23,9 @@
 
 .buttons {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
+    gap: 10px;
+
 }#yes {
     background-color: #59c9a5;
     border: 1px solid #FFFF;
@@ -33,5 +34,6 @@
 #no {
     background-color: #d81e5b;
     border: 1px solid #FFFF;
+    color: #FFFF;
     border-radius: 8px;
 }
