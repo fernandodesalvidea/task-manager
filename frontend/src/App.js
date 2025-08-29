@@ -84,7 +84,10 @@ const [newTaskContent, setNewTaskContent] = useState("");
     {taskToEdit && (
       <EditModal
         onConfirm={()=> handleEdit(taskToEdit.id, editTaskContent)}
-        onCancel={() => setTaskToEdit(null)}
+        onCancel={() => {
+          setTaskToEdit(null);
+          setEditTaskContent("");
+        }}
         message={
           <div>
             <input type='text'
