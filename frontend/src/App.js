@@ -3,12 +3,11 @@ import React from 'react';
 import Header from "./components/Header";
 import TaskList from './components/TaskList';
 import { useState } from 'react';
-import Task from './components/Task';
 import { IoMdAdd } from "react-icons/io";
+import ConfirmModal from './components/ConfirmModal';
 
 
 export default function App(){
-
 
    function fillTask(str){
     setNewTaskContent(str);
@@ -36,12 +35,23 @@ export default function App(){
   },
 ]);
 
+const [taskToDelete, setTaskToDelete] = useState(null); //set to null bc no task is selected for deletion
+
+function handleDelete(id){
+  setTask(tasks.filter(task => task.id !== id));
+  setTaskToDelete(null);
+}
+
 const [newTaskContent, setNewTaskContent] = useState("");
   return (
+    <>
     <section>
       <Header />
       <div className='container'>
-        <TaskList tasks = {tasks} onDelete={(id) => setTask(tasks.filter(t => t.id !== id))}/>
+        <TaskList
+          tasks = {tasks}
+          onDelete={(task) => setTaskToDelete(task)}
+        />
       </div>
       <div className='input-container'>
         <input type='text'
@@ -52,5 +62,13 @@ const [newTaskContent, setNewTaskContent] = useState("");
         <button type='button' id='add' onClick={addTask}><IoMdAdd /></button>
       </div>
     </section>
-  )
+      {taskToDelete && (
+      <ConfirmModal
+        onConfirm={() => handleDelete(taskToDelete.id)}
+        onCancel={() => setTaskToDelete(null)}
+        message="Are you sure?"
+      />
+    )}
+    </>
+  );
 }

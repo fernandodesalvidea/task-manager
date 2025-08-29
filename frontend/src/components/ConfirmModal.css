@@ -1,0 +1,37 @@
+.popup {
+    background-color: #d81e5b;
+    color: #FFFF;
+    border: 1px solid #59c9a5;
+}
+.popup {
+    font-size: 20px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); 
+    text-align: center;
+    z-index: 1000;
+    color: #FFF;
+    padding: 50px;
+    border-radius: 12px;
+}
+
+
+.question {
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+}#yes {
+    background-color: #59c9a5;
+    border: 1px solid #FFFF;
+    border-radius: 8px;
+}
+#no {
+    background-color: #d81e5b;
+    border: 1px solid #FFFF;
+    border-radius: 8px;
+}

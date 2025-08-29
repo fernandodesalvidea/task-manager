@@ -2,7 +2,8 @@ import './Task.css';
 import { MdModeEdit } from "react-icons/md";
 import { IoIosCheckmarkCircle } from "react-icons/io";
 import { FaTrashAlt } from "react-icons/fa";
-
+import { useState } from 'react';
+import ConfirmModal from './ConfirmModal';
 
 function Task({content, onDelete}){
     return(
