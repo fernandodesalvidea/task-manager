@@ -1,4 +1,4 @@
-import './EditModal.css'
+import './styles/EditModal.css'
 
 function EditModal({message, onConfirm, onCancel}){
     return (
