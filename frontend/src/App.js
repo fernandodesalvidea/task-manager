@@ -1,11 +1,12 @@
 import './App.css';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from "./components/Header";
 import TaskList from './components/TaskList';
 import { useState } from 'react';
 import { IoMdAdd } from "react-icons/io";
 import ConfirmModal from './components/ConfirmModal';
 import EditModal from './components/EditModal';
+import axios from "axios";
 
 
 
@@ -22,24 +23,21 @@ export default function App(){
     setNewTaskContent(''); //clear text input
   }
 
-  const [tasks, setTask] = useState([
-  {
-    content: "do groceries",
-    id: 123123123
-  },
-  {
-    content: "leetcode",
-    id: 234234234,
-  },
-  {
-    content: "gym workout",
-    id: 68680987,
-  },
-]);
+  const [tasks, setTask] = useState([]);
 
-const [taskToDelete, setTaskToDelete] = useState(null); //set to null bc no task is selected for deletion
-const [taskToEdit, setTaskToEdit] = useState(null);
-const [editTaskContent, setEditTaskContent] = useState("");
+  useEffect(() => {
+    axios.get("http://localhost:4000/task")
+    .then(res => {
+      setTask(res.data);
+    })
+    .catch(err => {
+      console.error("error fetching tasks:", err);
+    });
+  }, []);
+
+  const [taskToDelete, setTaskToDelete] = useState(null); //set to null bc no task is selected for deletion
+  const [taskToEdit, setTaskToEdit] = useState(null);
+  const [editTaskContent, setEditTaskContent] = useState("");
 
 function handleDelete(id){
   setTask(tasks.filter(task => task.id !== id));
