@@ -8,9 +8,10 @@ import ConfirmModal from './components/ConfirmModal';
 import EditModal from './components/EditModal';
 
 
+
 export default function App(){
 
-   function fillTask(str){
+  function fillTask(str){
     setNewTaskContent(str);
   }
 
@@ -50,6 +51,10 @@ function handleEdit(id, content){
   setTaskToEdit(null);
 }
 
+function clearTasks(){
+  setTask([]);
+}
+
 const [newTaskContent, setNewTaskContent] = useState("");
   return (
     <>
@@ -72,6 +77,7 @@ const [newTaskContent, setNewTaskContent] = useState("");
         onChange={(e) => fillTask(e.target.value)}
         />
         <button type='button' id='add' onClick={addTask}><IoMdAdd /></button>
+        <button type='button' id='clear' onClick={clearTasks}>Clear All</button>
       </div>
     </section>
       {taskToDelete && (
