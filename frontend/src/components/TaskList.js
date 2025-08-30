@@ -8,7 +8,7 @@ function TaskList( {tasks, onDelete, onEdit, setTaskToDelete, setTaskToEdit} ){
         <div className='tasks'>
             {tasks.map(task => (
                 <Task
-                    key = {task.id}
+                    key = {task._id || task.id}
                     content = {task.content}
                     onDelete={() => onDelete(task)}
                     onEdit={() => onEdit(task)}

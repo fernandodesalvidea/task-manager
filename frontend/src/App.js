@@ -17,10 +17,17 @@ export default function App(){
   }
 
   function addTask(){
-    if(!newTaskContent) return; //only press button if has content in it..
-    const newTask = {content: newTaskContent, id:Date.now()};
-    setTask([...tasks, newTask]);
-    setNewTaskContent(''); //clear text input
+    axios.post('http://localhost:4000/task', {
+      content: newTaskContent
+    })
+    .then( res => {
+      setTask([...tasks, res.data])
+      setNewTaskContent('');
+    }
+    )
+    .catch(err => {
+      console.error("error adding tasks", err)
+    });
   }
 
   const [tasks, setTask] = useState([]);
@@ -45,8 +52,7 @@ function handleDelete(id){
 }
 
 function handleEdit(id, content){
-  setTask(tasks.map(t => t.id === id ? {...t, content} : t)); //replace content if found
-  setTaskToEdit(null);
+  axios.put("http://localhost:4000/task/:id")
 }
 
 function clearTasks(){
