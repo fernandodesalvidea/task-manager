@@ -1,4 +1,4 @@
-import './styles/ConfirmModal.css';
+import '../styles/ConfirmModal.css';
 
 
 function ConfirmModal({message, onConfirm, onCancel}){
