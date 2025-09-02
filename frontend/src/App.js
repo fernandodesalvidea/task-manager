@@ -1,4 +1,4 @@
-import './App.css';
+import './styles/App.css';
 import React, { useEffect } from 'react';
 import Header from "./components/Header";
 import TaskList from './components/TaskList';
@@ -11,6 +11,11 @@ import axios from "axios";
 
 
 export default function App(){
+
+  const [tasks, setTask] = useState([]);
+  const [taskToDelete, setTaskToDelete] = useState(null); //set to null bc no task is selected for deletion
+  const [taskToEdit, setTaskToEdit] = useState(null);
+  const [editTaskContent, setEditTaskContent] = useState("");
 
   function fillTask(str){
     setNewTaskContent(str);
@@ -30,8 +35,6 @@ export default function App(){
     });
   }
 
-  const [tasks, setTask] = useState([]);
-
   useEffect(() => {
     axios.get("http://localhost:4000/task")
     .then(res => {
@@ -42,17 +45,20 @@ export default function App(){
     });
   }, []);
 
-  const [taskToDelete, setTaskToDelete] = useState(null); //set to null bc no task is selected for deletion
-  const [taskToEdit, setTaskToEdit] = useState(null);
-  const [editTaskContent, setEditTaskContent] = useState("");
 
 function handleDelete(id){
-  setTask(tasks.filter(task => task.id !== id));
-  setTaskToDelete(null);
+  axios.delete(`http://localhost:4000/task/${id}`)
+  .then( res => {
+    setTask(tasks.filter(task => task._id !== id))
+  })
+  .catch(err => {
+    console.error("error deleting task", err);
+  })
 }
 
 function handleEdit(id, content){
-  axios.put("http://localhost:4000/task/:id")
+  //axios.put(`http://localhost:4000/task/${id}`)
+
 }
 
 function clearTasks(){
@@ -86,7 +92,7 @@ const [newTaskContent, setNewTaskContent] = useState("");
     </section>
       {taskToDelete && (
       <ConfirmModal
-        onConfirm={() => handleDelete(taskToDelete.id)}
+        onConfirm={() => handleDelete(taskToDelete._id)}
         onCancel={() => setTaskToDelete(null)}
         message="Are you sure you want to delete?"
       />

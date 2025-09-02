@@ -24,6 +24,7 @@ router.post('/task', async (req, res) => {
   try {
       const newTask = new Task({
       content: req.body.content,
+      date: Date.now
     });
     await newTask.save(); //save to DB
     res.status(201).json(newTask); //send it back as a response
@@ -48,7 +49,7 @@ router.delete('/task/:id', async (req, res) => {
 
 //edit a task - PUT:
 router.put('/task/:id', async (req, res) => {
-  let {content, done} = req.body;
+  let {content, done, date, deadline} = req.body;
   try {
       const foundTask = await Task.findById(req.params.id);
       if(!foundTask){
@@ -56,6 +57,9 @@ router.put('/task/:id', async (req, res) => {
       }
       if(content !== undefined){foundTask.content = content}
       if(done !== undefined){foundTask.done = done}
+      if(date !== undefined){foundTask.date = date}
+      if(deadline !== undefined){foundTask.deadline = deadline}
+      
       await foundTask.save();//save to our DB
       res.status(201).json(foundTask); //send updated task back to the client
     }
