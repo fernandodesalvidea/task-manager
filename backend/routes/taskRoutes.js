@@ -1,39 +1,14 @@
-const express = require('express'); //import library to use express
-const dotenv = require('dotenv'); //import db
-const connectDB = require('./config/db');
-const cors = require('cors');
+const express = require('express');
+const Task = require('../models/Task');
+const router = express.Router();
 
-//DATABASE CONNECTION ---------------------------
-dotenv.config()
 
-const app = express(); //create the server instance
-app.use(cors()); // allows all origins
-app.use(express.json())
-
-//add a route:
-app.get('/', (req, res) => {
-  res.send('hello world!'); //test a route (homepage)
+router.get('/', (req, res) => {
+  res.send('hello world');
 });
-
-const PORT = process.env.PORT || 4000;
-console.log('Starting server...');
-connectDB().then(() => {
-  app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
-  });
-}).catch(err => {
-  console.error('DB connection failed', err);
-});
-
-
-//import Task model:
-const Task = require('./models/Task');
-
 
 //GET request - return tasks array, from the backend to the frontend
-
-
-app.get('/task', async (req, res) => {
+router.get('/task', async (req, res) => {
   try {
     const tasks = await Task.find();
     res.status(200).json(tasks);
@@ -45,9 +20,9 @@ app.get('/task', async (req, res) => {
 //test post request - we use POST bc the user is creating new data (task)
 //make a task object
 //save it to our DB
-app.post('/task', async (req, res) => {
+router.post('/task', async (req, res) => {
   try {
-    const newTask = new Task({
+      const newTask = new Task({
       content: req.body.content,
     });
     await newTask.save(); //save to DB
@@ -58,7 +33,7 @@ app.post('/task', async (req, res) => {
 });
 
 //delete a task - DELETE:
-app.delete('/task/:id', async (req, res) => {
+router.delete('/task/:id', async (req, res) => {
   try{
     const deletedTask = await Task.findByIdAndDelete(req.params.id);
     if(!deletedTask){
@@ -72,7 +47,7 @@ app.delete('/task/:id', async (req, res) => {
 })
 
 //edit a task - PUT:
-app.put('/task/:id', async (req, res) => {
+router.put('/task/:id', async (req, res) => {
   let {content, done} = req.body;
   try {
       const foundTask = await Task.findById(req.params.id);
@@ -89,3 +64,4 @@ app.put('/task/:id', async (req, res) => {
   }
 });
 
+module.exports = router;
