@@ -68,6 +68,22 @@ router.put('/task/:id', async (req, res) => {
   }
 });
 
+//mark the task as complete:
+router.put('/:id', async (req, res) => {
+  try {
+    const foundTask = await Task.findById(req.params.id); //find task in the db
+    if(!foundTask){
+      return res.status(400).send('not foundTask');
+    }
+    foundTask.done = true;
+    await foundTask.save(); //save to DB
+    res.status(201).json(foundTask); //send back to frontend  
+  } catch (err) {
+    console.error('PUT /task/:id error:', err);
+    res.status(400).json({message: 'failed to mark task as done', error:err.message})
+  }
+});
+
 //delete ALL tasks (clear all request)
 router.delete('/task', async (req, res) => {
   try {

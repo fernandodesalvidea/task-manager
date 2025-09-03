@@ -16,7 +16,7 @@ export default function App(){
   const [editTaskContent, setEditTaskContent] = useState("");
   const [newTaskContent, setNewTaskContent] = useState("");
   const [showClearAllModal, setShowClearAllModal] = useState(null);
-  const [taskToComplete, setTaskToComplete] = useState(null);
+
 
   function fillTask(str){
     setNewTaskContent(str);
@@ -35,7 +35,7 @@ export default function App(){
       console.error("error adding tasks", err)
     });
   }
-
+  //this gets all the tasks from our backend
   useEffect(() => {
     axios.get("http://localhost:4000/task")
     .then(res => {
@@ -75,6 +75,23 @@ function handleEdit(id, content){
     console.error('could not edit task', err);
   })
 }
+//handler which gets called from when user clicks done checkmark, id gets passed from TaskList
+function handleComplete(id){
+  axios.put(`http://localhost:4000/${id}`)
+ 
+  .then(res => {
+    const checkedTasks = tasks.map(task => { //make a new array
+      if(task._id === id){
+        return {...task, done:true}; //set done to be true 
+      }
+      else {
+        return task
+      }
+    })
+    setTask(checkedTasks); //update in React
+  }
+  )
+}
 
 function clearTasks(){
   axios.delete(`http://localhost:4000/task`)
@@ -94,8 +111,7 @@ function clearTasks(){
             setTaskToEdit(task);
             setNewTaskContent(task.content);
           }}
-          onComplete={(task) => setTaskToComplete(task)}
-          
+          onComplete={handleComplete}  //set reference to handler to pass down
         />
       </div>
       <div className='input-container'>

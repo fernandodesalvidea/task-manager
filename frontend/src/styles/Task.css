@@ -10,7 +10,15 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-}  
+}
+.task.done {
+    border: 2px solid white;       /* optional, or keep your existing style */
+    background-color: #b0b0b0;     /* lighter gray so it’s softer */
+    color: #666666;                /* darker gray text for contrast */
+    text-decoration: line-through; /* strike through done tasks */
+    opacity: 0.7;                  /* slight fade */
+    transition: all 0.3s ease;     /* smooth animation when task is marked done */
+}
 
 button {
     margin-left: 5px;
