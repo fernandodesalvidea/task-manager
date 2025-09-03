@@ -168,7 +168,7 @@ function handleEditPriorityChange(e){
           setEditTaskContent("");
         }}
         message={
-          <div>
+          <div id='edit-task-dropdown'>
             <input type='text'
             placeholder='edit task content'
             value={editTaskContent}

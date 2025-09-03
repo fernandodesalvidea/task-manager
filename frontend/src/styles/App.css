@@ -32,4 +32,8 @@ input:focus {
     cursor: text;
     border-color: #23395b;
 }
-
+#edit-task-dropdown{
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}

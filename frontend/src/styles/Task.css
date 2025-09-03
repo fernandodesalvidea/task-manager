@@ -20,6 +20,13 @@
     transition: all 0.3s ease;     /* smooth animation when task is marked done */
 }
 
+.task.priority.medium {
+    border: 2px solid khaki;
+}
+.task.priority.high {
+    border: 2px solid lightcoral;
+}
+
 button {
     margin-left: 5px;
     margin-right: 4px;

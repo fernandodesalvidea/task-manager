@@ -4,8 +4,11 @@ import { GiCheckMark } from "react-icons/gi";
 import { FaTrashAlt } from "react-icons/fa";
 
 function Task({content, onDelete, onEdit, onComplete, task}){
+
+    const priorityClass = task.priority ? `priority ${task.priority.toLowerCase()}` : '';
+    
     return(
-    <div className={task.done ? 'task done' : 'task'}>
+    <div className={`task ${task.done ? 'done' : ''} ${priorityClass}`} >
     <div className='done'>
         {content}
      </div>
