@@ -15,6 +15,7 @@ export default function App(){
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [editTaskContent, setEditTaskContent] = useState("");
   const [newTaskContent, setNewTaskContent] = useState("");
+  const [showClearAllModal, setShowClearAllModal] = useState(false);
 
   function fillTask(str){
     setNewTaskContent(str);
@@ -101,7 +102,10 @@ function clearTasks(){
         onChange={(e) => fillTask(e.target.value)}
         />
         <button type='button' id='add' onClick={addTask}><IoMdAdd /></button>
-        <button type='button' id='clear' onClick={clearTasks}>Clear All</button>
+        <button type='button' id='clear' onClick={ () => {
+          setShowClearAllModal(true);
+          }}
+          >Clear All</button>
       </div>
     </section>
       {taskToDelete && (
@@ -135,6 +139,19 @@ function clearTasks(){
         }
       />
     )}
+    {showClearAllModal && (
+       <ConfirmModal
+        onConfirm={() => {
+          clearTasks();
+          setShowClearAllModal(false)
+        }}
+        onCancel={() => setShowClearAllModal(false)}
+        message="Warning: this will delete all tasks. Are you sure you want to proceed?"
+      />
+    )
+
+    }
+    
     </>
   );
 }
