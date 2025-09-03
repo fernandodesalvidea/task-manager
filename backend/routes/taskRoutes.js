@@ -24,7 +24,7 @@ router.post('/task', async (req, res) => {
   try {
       const newTask = new Task({
       content: req.body.content,
-      date: Date.now
+      date: Date.now()
     });
     await newTask.save(); //save to DB
     res.status(201).json(newTask); //send it back as a response
