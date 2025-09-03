@@ -57,8 +57,23 @@ function handleDelete(id){
 }
 
 function handleEdit(id, content){
-  //axios.put(`http://localhost:4000/task/${id}`)
-
+  axios.put(`http://localhost:4000/task/${id}`, {content})
+  .then(res => {
+    //find task with that id
+    const updatedTasks = tasks.map(task => {
+       if(task._id === id){
+          return {...task, content:content};
+        }
+        else{
+          return task
+        }
+      }
+    )
+    setTask(updatedTasks); //update in React
+  })
+  .catch(err => {
+    console.error("could not edit task")
+  })
 }
 
 function clearTasks(){
@@ -92,14 +107,20 @@ const [newTaskContent, setNewTaskContent] = useState("");
     </section>
       {taskToDelete && (
       <ConfirmModal
-        onConfirm={() => handleDelete(taskToDelete._id)}
+        onConfirm={() => {
+          handleDelete(taskToDelete._id)
+          setTaskToDelete(null)
+        }}
         onCancel={() => setTaskToDelete(null)}
         message="Are you sure you want to delete?"
       />
     )}
     {taskToEdit && (
       <EditModal
-        onConfirm={()=> handleEdit(taskToEdit.id, editTaskContent)}
+        onConfirm={()=>{
+           handleEdit(taskToEdit._id, editTaskContent)
+          setTaskToEdit(null)
+        }}
         onCancel={() => {
           setTaskToEdit(null);
           setEditTaskContent("");
