@@ -3,7 +3,7 @@ import '../styles/Header.css';
 function Header(){
     return (
         <header>
-            <h1>My Tasks</h1>
+            <h1>Your Tasks</h1>
         </header>
     );
 }

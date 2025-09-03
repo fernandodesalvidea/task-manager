@@ -7,7 +7,6 @@ import { IoMdAdd } from 'react-icons/io';
 import ConfirmModal from './components/ConfirmModal';
 import EditModal from './components/EditModal';
 import axios from 'axios';
-import { MdArrowDropDown } from 'react-icons/md';
 
 export default function App(){
   //state variables
