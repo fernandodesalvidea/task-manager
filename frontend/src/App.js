@@ -1,14 +1,12 @@
 import './styles/App.css';
 import React, { useEffect } from 'react';
-import Header from "./components/Header";
+import Header from './components/Header';
 import TaskList from './components/TaskList';
 import { useState } from 'react';
-import { IoMdAdd } from "react-icons/io";
+import { IoMdAdd } from 'react-icons/io';
 import ConfirmModal from './components/ConfirmModal';
 import EditModal from './components/EditModal';
-import axios from "axios";
-
-
+import axios from 'axios';
 
 export default function App(){
 
@@ -16,6 +14,7 @@ export default function App(){
   const [taskToDelete, setTaskToDelete] = useState(null); //set to null bc no task is selected for deletion
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [editTaskContent, setEditTaskContent] = useState("");
+  const [newTaskContent, setNewTaskContent] = useState("");
 
   function fillTask(str){
     setNewTaskContent(str);
@@ -45,7 +44,6 @@ export default function App(){
     });
   }, []);
 
-
 function handleDelete(id){
   axios.delete(`http://localhost:4000/task/${id}`)
   .then( res => {
@@ -72,15 +70,16 @@ function handleEdit(id, content){
     setTask(updatedTasks); //update in React
   })
   .catch(err => {
-    console.error("could not edit task")
+    console.error('could not edit task', err);
   })
 }
 
 function clearTasks(){
-  setTask([]);
+  axios.delete(`http://localhost:4000/task`)
+  .then(() => setTask([]))
+  .catch(err => console.error('could not clear all tasks', err))
 }
 
-const [newTaskContent, setNewTaskContent] = useState("");
   return (
     <>
     <section>
@@ -128,7 +127,7 @@ const [newTaskContent, setNewTaskContent] = useState("");
         message={
           <div>
             <input type='text'
-            placeholder='edit your task'
+            placeholder='edit task content'
             value={editTaskContent}
             onChange={e => setEditTaskContent(e.target.value)}
           />

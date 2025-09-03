@@ -68,4 +68,14 @@ router.put('/task/:id', async (req, res) => {
   }
 });
 
+//delete ALL tasks (clear all request)
+router.delete('/task', async (req, res) => {
+  try {
+    const result = await Task.deleteMany({})
+    res.status(200).send({message: 'All tasks cleared'});
+  } catch (err) {
+    res.status(500).send(err);
+  }
+})
+
 module.exports = router;
