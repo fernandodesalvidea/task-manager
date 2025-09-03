@@ -7,6 +7,7 @@ import { IoMdAdd } from 'react-icons/io';
 import ConfirmModal from './components/ConfirmModal';
 import EditModal from './components/EditModal';
 import axios from 'axios';
+import { MdArrowDropDown } from 'react-icons/md';
 
 export default function App(){
   //state variables
@@ -16,6 +17,8 @@ export default function App(){
   const [editTaskContent, setEditTaskContent] = useState("");
   const [newTaskContent, setNewTaskContent] = useState("");
   const [showClearAllModal, setShowClearAllModal] = useState(null);
+  const [taskPriority, setTaskPriority] = useState("Low");
+  const [editTaskPriority, setEditTaskPriority] = useState("Low");
 
 
   function fillTask(str){
@@ -24,7 +27,8 @@ export default function App(){
 
   function addTask(){
     axios.post('http://localhost:4000/task', {
-      content: newTaskContent
+      content: newTaskContent,
+      priority: taskPriority
     })
     .then( res => {
       setTask([...tasks, res.data])
@@ -56,13 +60,13 @@ function handleDelete(id){
   })
 }
 
-function handleEdit(id, content){
-  axios.put(`http://localhost:4000/task/${id}`, {content})
+function handleEdit(id, content, priority){
+  axios.put(`http://localhost:4000/task/${id}`, {content, priority})
   .then(res => {
     //find task with that id
     const updatedTasks = tasks.map(task => {
        if(task._id === id){
-          return {...task, content:content};
+          return {...task, content:content, priority:priority};
         }
         else{
           return task
@@ -99,6 +103,15 @@ function clearTasks(){
   .catch(err => console.error('could not clear all tasks', err))
 }
 
+function handlePriorityChange(e){
+  setTaskPriority(e.target.value) //modify state variable
+}
+
+function handleEditPriorityChange(e){
+    setEditTaskPriority(e.target.value) //modify state variable to edit priority
+}
+
+
   return (
     <>
     <section>
@@ -109,7 +122,8 @@ function clearTasks(){
           onDelete={(task) => setTaskToDelete(task)}
           onEdit={(task)=>{
             setTaskToEdit(task);
-            setNewTaskContent(task.content);
+            setEditTaskContent(task.content);
+            setEditTaskPriority(task.priority);
           }}
           onComplete={handleComplete}  //set reference to handler to pass down
         />
@@ -120,6 +134,11 @@ function clearTasks(){
         value={newTaskContent}
         onChange={(e) => fillTask(e.target.value)}
         />
+        <select value={taskPriority} onChange={handlePriorityChange}> 
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
         <button type='button' id='add' onClick={addTask}><IoMdAdd /></button>
         <button type='button' id='clear' onClick={ () => {
           setShowClearAllModal(true);
@@ -140,8 +159,9 @@ function clearTasks(){
     {taskToEdit && (
       <EditModal
         onConfirm={()=>{
-           handleEdit(taskToEdit._id, editTaskContent)
+           handleEdit(taskToEdit._id, editTaskContent, editTaskPriority)
           setTaskToEdit(null)
+
         }}
         onCancel={() => {
           setTaskToEdit(null);
@@ -154,7 +174,13 @@ function clearTasks(){
             value={editTaskContent}
             onChange={e => setEditTaskContent(e.target.value)}
           />
+          <select value={editTaskPriority} onChange={handleEditPriorityChange}> 
+            <option value="Low">Low</option>
+            <option value="Medium">Medium</option>
+            <option value="High">High</option>
+        </select>
           </div>
+          
         }
       />
     )}
