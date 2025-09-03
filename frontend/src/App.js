@@ -9,13 +9,14 @@ import EditModal from './components/EditModal';
 import axios from 'axios';
 
 export default function App(){
-
+  //state variables
   const [tasks, setTask] = useState([]);
-  const [taskToDelete, setTaskToDelete] = useState(null); //set to null bc no task is selected for deletion
+  const [taskToDelete, setTaskToDelete] = useState(null); 
   const [taskToEdit, setTaskToEdit] = useState(null);
   const [editTaskContent, setEditTaskContent] = useState("");
   const [newTaskContent, setNewTaskContent] = useState("");
-  const [showClearAllModal, setShowClearAllModal] = useState(false);
+  const [showClearAllModal, setShowClearAllModal] = useState(null);
+  const [taskToComplete, setTaskToComplete] = useState(null);
 
   function fillTask(str){
     setNewTaskContent(str);
@@ -93,6 +94,8 @@ function clearTasks(){
             setTaskToEdit(task);
             setNewTaskContent(task.content);
           }}
+          onComplete={(task) => setTaskToComplete(task)}
+          
         />
       </div>
       <div className='input-container'>
@@ -105,7 +108,7 @@ function clearTasks(){
         <button type='button' id='clear' onClick={ () => {
           setShowClearAllModal(true);
           }}
-          >Clear All</button>
+          >Clear all</button>
       </div>
     </section>
       {taskToDelete && (
@@ -148,10 +151,7 @@ function clearTasks(){
         onCancel={() => setShowClearAllModal(false)}
         message="Warning: this will delete all tasks. Are you sure you want to proceed?"
       />
-    )
-
-    }
-    
+    )}
     </>
   );
 }

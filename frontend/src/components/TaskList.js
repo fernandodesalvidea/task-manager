@@ -2,7 +2,7 @@ import '../styles/TaskList.css';
 import Task from './Task.js';
 
 
-function TaskList( {tasks, onDelete, onEdit, setTaskToDelete, setTaskToEdit} ){
+function TaskList( {tasks, onDelete, onEdit, setTaskToDelete, setTaskToEdit, onComplete} ){
     return (
     <>
         <div className='tasks'>
@@ -12,6 +12,10 @@ function TaskList( {tasks, onDelete, onEdit, setTaskToDelete, setTaskToEdit} ){
                     content = {task.content}
                     onDelete={() => onDelete(task)}
                     onEdit={() => onEdit(task)}
+                    onComplete={() => {
+                        onComplete(task.done)
+                        console.log(`${task.content} marked done!`)
+                    }}
                 />
             ))}
         </div>
