@@ -3,13 +3,14 @@ const dotenv = require('dotenv'); //so .env file isn't pushed
 const connectDB = require('./config/db');
 const cors = require('cors');
 const taskRoutes = require('./routes/taskRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 dotenv.config()
 const app = express(); //create the server instance
 app.use(cors()); // allows all origins
 app.use(express.json())
 
-app.use('/', taskRoutes);
+app.use('/', taskRoutes, userRoutes);
 
 const PORT = process.env.PORT || 4000;
 //console.log('Starting server...');

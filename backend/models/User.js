@@ -3,7 +3,7 @@ bcrypt = require('bcrypt'),
 SALT_WORK_FACTOR = 10;
 
 //user schema
-const userSchema = new mongoose.Schema({
+const UserSchema = new mongoose.Schema({
     email: {type: String, required: true, unique: true},
     password: {type: String, required: true, unique: true},
     createdAt: {type: Date, default: Date.now()}
