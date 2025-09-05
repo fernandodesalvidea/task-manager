@@ -30,8 +30,8 @@ export default function App(){
       priority: taskPriority
     })
     .then( res => {
-      setTask([...tasks, res.data])
-      setNewTaskContent('');
+      setTask([...tasks, res.data]) //save response to our array
+      setNewTaskContent(''); //clear input box
     }
     )
     .catch(err => {
@@ -51,8 +51,8 @@ export default function App(){
 
 function handleDelete(id){
   axios.delete(`http://localhost:4000/task/${id}`)
-  .then( res => {
-    setTask(tasks.filter(task => task._id !== id))
+  .then(() => {
+    setTask(tasks.filter(task => task._id !== id)) //create a new array with all tasks except that one
   })
   .catch(err => {
     console.error("error deleting task", err);
@@ -62,7 +62,7 @@ function handleDelete(id){
 function handleEdit(id, content, priority){
   axios.put(`http://localhost:4000/task/${id}`, {content, priority})
   .then(res => {
-    //find task with that id
+    //create a new array with that updated task
     const updatedTasks = tasks.map(task => {
        if(task._id === id){
           return {...task, content:content, priority:priority};

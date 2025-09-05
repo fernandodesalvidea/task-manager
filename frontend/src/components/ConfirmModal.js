@@ -1,6 +1,5 @@
 import '../styles/ConfirmModal.css';
 
-
 function ConfirmModal({message, onConfirm, onCancel}){
     return (
         <div className="popup" id='confirmpopup'>
