@@ -40,4 +40,23 @@ router.post('/user/login', async (req, res) => {
     }
 });
 
+router.get('/profile', authenticateToken, (req, res) => {
+    res.json({message: `Welcome, ${req.user.email}!`});
+})
+
+function authenticateToken(req, res, next){
+    const authHeader = req.headers['authorization']; //grab value of "Authorization" header
+    const token = authHeader && authHeader.split(' ')[1]; //splits <Bearer> <token>, grab token
+
+    if(token == null) return res.sendStatus(401); //no token? user not authorized access
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        console.log(err);
+        if(err) return res.status(403); //token invalid or forbidden
+        req.user = user; // attach decoded token payload (id, email) to req.user
+        //that way, later routes can use it
+        next();
+    });
+}
+
 module.exports = router;
