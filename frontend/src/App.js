@@ -7,6 +7,7 @@ import { IoMdAdd } from 'react-icons/io';
 import ConfirmModal from './components/ConfirmModal';
 import EditModal from './components/EditModal';
 import axios from 'axios';
+import LoginPage from './components/LoginPage';
 
 export default function App(){
   //state variables
@@ -18,6 +19,7 @@ export default function App(){
   const [showClearAllModal, setShowClearAllModal] = useState(null);
   const [taskPriority, setTaskPriority] = useState("Low");
   const [editTaskPriority, setEditTaskPriority] = useState("Low");
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
 
   function fillTask(str){
@@ -40,14 +42,20 @@ export default function App(){
   }
   //this gets all the tasks from our backend
   useEffect(() => {
-    axios.get("http://localhost:4000/task")
-    .then(res => {
-      setTask(res.data);
-    })
-    .catch(err => {
-      console.error("error fetching tasks:", err);
-    });
-  }, []);
+    if(isLoggedIn){
+      axios.get("http://localhost:4000/task")
+      .then(res => {
+        setTask(res.data);
+      })
+      .catch(err => {
+        console.error("error fetching tasks:", err);
+      });
+    }
+  }, [isLoggedIn]);
+
+  function handleLoginSuccess(){
+    setIsLoggedIn(true);
+  }
 
 function handleDelete(id){
   axios.delete(`http://localhost:4000/task/${id}`)
@@ -111,10 +119,18 @@ function handleEditPriorityChange(e){
 }
 
 
+function handleLogout() {
+  localStorage.setItem("token", "");
+  setIsLoggedIn(false);
+}
+ // ---- CONDITIONAL RENDERING ----
+  if (!isLoggedIn) {
+    return <LoginPage onLoginSuccess={handleLoginSuccess} />;
+  }
   return (
     <>
+    <Header onLogout = {handleLogout}/>
     <section>
-      <Header />
       <div className='container'>
         <TaskList
           tasks = {tasks}
@@ -193,6 +209,8 @@ function handleEditPriorityChange(e){
         message="Warning: this will delete all tasks. Are you sure you want to proceed?"
       />
     )}
+    <button onClick={handleLogout}>Logout</button>
+
     </>
   );
 }

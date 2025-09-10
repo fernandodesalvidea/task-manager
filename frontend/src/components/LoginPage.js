@@ -1,0 +1,63 @@
+import '../styles/LoginPage.css';
+import React, { useEffect } from 'react';
+import { useState } from 'react';
+import axios from 'axios';
+
+function LoginPage({onLoginSuccess}){
+   const [email, setEmail] = useState("")
+   const [password, setPassword] = useState("")
+
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+        if(token){
+            onLoginSuccess();
+        }
+    }, [onLoginSuccess]);
+
+    //submit handler
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+
+        try {
+            const response = await axios.post('http://localhost:4000/login', {
+                email: email,
+                password: password
+            });
+
+            if(response.data.token){
+                localStorage.setItem("token", response.data.token);
+                onLoginSuccess();
+            }
+            else {
+                alert('login failed') ;
+            }
+
+        } catch (err) {
+             alert('Login failed: ' + (err.response?.data?.message || err.message));
+        }
+               
+    }
+
+    return(
+        <form onSubmit={handleSubmit}>
+            <h2>Welcome back</h2>
+            <input 
+                type='email'
+                placeholder='email'
+                value={email}
+                onChange={e => setEmail(e.target.value)}
+            />
+            <input 
+                type='password'
+                placeholder='password'
+                value={password}
+                onChange={e => setPassword(e.target.value)}
+            />
+            <button type='submit'>Login</button>
+        </form>
+    )
+
+
+}
+
+export default LoginPage;

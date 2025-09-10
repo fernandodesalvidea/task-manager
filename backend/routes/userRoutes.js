@@ -24,7 +24,7 @@ function generateAccessToken(id, email) {
 }
 
 //login a current user:
-router.post('/user/login', async (req, res) => {
+router.post('/login', async (req, res) => {
     try {
         const existingUser = await User.findOne({email: req.body.email});
         if(!existingUser){
