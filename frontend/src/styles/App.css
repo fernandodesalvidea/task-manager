@@ -1,3 +1,4 @@
+
 section {
     display: flex;
     flex-direction: column;
@@ -5,7 +6,6 @@ section {
     gap: 40px;
 }
 #add{
-    background-color: #b9e3c6;
     padding: 10px;
 }
 #add:hover{
@@ -13,14 +13,13 @@ section {
     background-color: #fffd98;
 }
 #clear {
-    background-color: #b9e3c6;
     padding: 10px;
 }
 
 .input-container{
     display: flex;
     gap: 10px;
-    border-color: #23395b;
+    border-color: yellow;
 }
 input{
     padding: 10px;

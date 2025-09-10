@@ -1,11 +1,9 @@
 .task {
-    color: #23395b;
     text-align: left;
     font-size: 1.2rem;
     padding: 8px;
     width: 400px;
     border: 2px solid #b9e3c6;
-    background-color: #59c9a5;
     border-radius: 8px;
     display: flex;
     justify-content: space-between;
@@ -13,8 +11,8 @@
 }
 .task.done {
     border: 2px solid white;       /* optional, or keep your existing style */
-    background-color: #b0b0b0;     /* lighter gray so it’s softer */
-    color: #666666;                /* darker gray text for contrast */
+    /*background-color: #b0b0b0;     /* lighter gray so it’s softer */
+    /*color: #666666;                /* darker gray text for contrast */
     text-decoration: line-through; /* strike through done tasks */
     opacity: 0.7;                  /* slight fade */
     transition: all 0.3s ease;     /* smooth animation when task is marked done */
@@ -37,8 +35,6 @@ button {
     font-weight: bold;
     transition: 0.5s ease;
     border: 1px solid #23395b;
-    background-color: #b9e3c6;
-    color: #23395b;
     font-size: 1.2rem;
     border-radius: 8px;
 }
