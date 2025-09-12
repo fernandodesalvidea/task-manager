@@ -4,7 +4,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 
 //register a new user
-router.post('/user/register', async (req, res) => {
+router.post('/register', async (req, res) => {
     try {
         const newUser = new User({
         email: req.body.email,
@@ -15,7 +15,11 @@ router.post('/user/register', async (req, res) => {
     res.status(201).json(newUser);
     } 
     catch (err) {
-        res.status(500).json({message: 'error creating user', error: err.message});
+         if (err.code === 11000) { // Mongo duplicate key
+      res.status(400).json({ message: 'Email already registered' });
+    } else {
+      res.status(500).json({ message: 'Error creating user', error: err.message });
+    }
     }
 });
 

@@ -7,7 +7,8 @@ import { IoMdAdd } from 'react-icons/io';
 import ConfirmModal from './components/ConfirmModal';
 import EditModal from './components/EditModal';
 import axios from 'axios';
-import LoginPage from './components/LoginPage';
+import LoginPage from './pages/LoginPage';
+import RegisterPage from './pages/RegisterPage';
 
 export default function App(){
   //state variables
@@ -20,7 +21,15 @@ export default function App(){
   const [taskPriority, setTaskPriority] = useState("Low");
   const [editTaskPriority, setEditTaskPriority] = useState("Low");
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showLogin, setShowLogin] = useState(true);
 
+  function switchToRegister(){
+    setShowLogin(false);
+  }
+
+  function switchToLogin(){
+    setShowLogin(true);
+  }
 
   function fillTask(str){
     setNewTaskContent(str);
@@ -125,7 +134,14 @@ function handleLogout() {
 }
  // ---- CONDITIONAL RENDERING ----
   if (!isLoggedIn) {
-    return <LoginPage onLoginSuccess={handleLoginSuccess} />;
+    return (
+    <>
+    {showLogin
+    ? <LoginPage onLoginSuccess={handleLoginSuccess} switchToRegister={switchToRegister} />
+    : <RegisterPage onLoginSuccess={handleLoginSuccess} switchToLogin={switchToLogin} />
+  }
+
+    </>)
   }
   return (
     <>

@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
 
-function LoginPage({onLoginSuccess}){
+function LoginPage({onLoginSuccess, switchToRegister}){
    const [email, setEmail] = useState("")
    const [password, setPassword] = useState("")
 
@@ -53,8 +53,16 @@ function LoginPage({onLoginSuccess}){
                 value={password}
                 onChange={e => setPassword(e.target.value)}
             />
+            <div className='container'>
             <button type='submit'>Login</button>
+                <p>
+                    New user? 
+                    <span className="link" onClick={switchToRegister}>Register</span>
+                </p>
+            </div>
+            
         </form>
+        
     )
 
 
