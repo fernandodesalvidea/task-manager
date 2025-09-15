@@ -36,10 +36,16 @@ export default function App(){
   }
 
   function addTask(){
-    axios.post('http://localhost:4000/task', {
+    axios.post('http://localhost:4000/task', 
+    {
       content: newTaskContent,
       priority: taskPriority
-    })
+    },
+  {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem('token')}`
+    }
+  })
     .then( res => {
       setTask([...tasks, res.data]) //save response to our array
       setNewTaskContent(''); //clear input box
@@ -52,7 +58,11 @@ export default function App(){
   //this gets all the tasks from our backend
   useEffect(() => {
     if(isLoggedIn){
-      axios.get("http://localhost:4000/task")
+      axios.get("http://localhost:4000/task", {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`
+      }
+    })
       .then(res => {
         setTask(res.data);
       })

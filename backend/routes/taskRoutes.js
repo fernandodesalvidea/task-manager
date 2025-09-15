@@ -1,6 +1,7 @@
 const express = require('express');
 const Task = require('../models/Task');
 const router = express.Router();
+const jwt = require('jsonwebtoken');
 
 
 router.get('/', (req, res) => {
@@ -8,24 +9,26 @@ router.get('/', (req, res) => {
 });
 
 //GET request - return tasks array, from the backend to the frontend
-router.get('/task', async (req, res) => {
+router.get('/task', authenticateToken, async (req, res) => {
   try {
-    const tasks = await Task.find();
+    const tasks = await Task.find({ userId: req.user.id });
     res.status(200).json(tasks);
   } catch (err) {
     res.status(500).json({message: 'failed to fetch task', error: err.message})
   }
 });
 
-//test post request - we use POST bc the user is creating new data (task)
-//make a task object
-//save it to our DB
-router.post('/task', async (req, res) => {
+//ADD A TASK - POST
+router.post('/task', authenticateToken, async (req, res) => {
   try {
+    //console.log("Decoded user in /task:", req.user);
+    //console.log("Request body:", req.body);
       const newTask = new Task({
       content: req.body.content,
       date: Date.now(),
       priority: req.body.priority,
+      userId: req.user._id || req.user.id
+      
     });
     await newTask.save(); //save to DB
     res.status(201).json(newTask); //send it back as a response
@@ -96,4 +99,18 @@ router.delete('/task', async (req, res) => {
   }
 })
 
+function authenticateToken(req, res, next){
+    const authHeader = req.headers['authorization']; //grab value of "Authorization" header
+    const token = authHeader && authHeader.split(' ')[1]; //splits <Bearer> <token>, grab token
+
+    if(token == null) return res.sendStatus(401); //no token? user not authorized access
+
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+        if (err) console.error("JWT verification error:", err);
+        if(err) return res.status(403); //token invalid or forbidden
+        req.user = user; // attach decoded token payload (id, email) to req.user
+        //that way, later routes can use it
+        next();
+    });
+}
 module.exports = router;

@@ -25,6 +25,7 @@ router.post('/register', async (req, res) => {
 
 function generateAccessToken(id, email) {
     return jwt.sign({id, email}, process.env.JWT_SECRET, {expiresIn: '1800s'});
+    //id: user._id
 }
 
 //login a current user:
@@ -55,7 +56,7 @@ function authenticateToken(req, res, next){
     if(token == null) return res.sendStatus(401); //no token? user not authorized access
 
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        console.log(err);
+        if (err) console.error("JWT verification error:", err);
         if(err) return res.status(403); //token invalid or forbidden
         req.user = user; // attach decoded token payload (id, email) to req.user
         //that way, later routes can use it
