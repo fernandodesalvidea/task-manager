@@ -4,12 +4,8 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 
 
-router.get('/', (req, res) => {
-  res.send('hello world');
-});
-
 //GET request - return tasks array, from the backend to the frontend
-router.get('/task', authenticateToken, async (req, res) => {
+router.get('/', authenticateToken, async (req, res) => {
   try {
     const tasks = await Task.find({ userId: req.user.id });
     res.status(200).json(tasks);
@@ -19,7 +15,7 @@ router.get('/task', authenticateToken, async (req, res) => {
 });
 
 //ADD A TASK - POST
-router.post('/task', authenticateToken, async (req, res) => {
+router.post('/', authenticateToken, async (req, res) => {
   try {
     //console.log("Decoded user in /task:", req.user);
     //console.log("Request body:", req.body);
@@ -38,7 +34,7 @@ router.post('/task', authenticateToken, async (req, res) => {
 });
 
 //delete a task - DELETE:
-router.delete('/task/:id', async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try{
     const deletedTask = await Task.findByIdAndDelete(req.params.id);
     if(!deletedTask){
@@ -52,7 +48,7 @@ router.delete('/task/:id', async (req, res) => {
 })
 
 //edit a task - PUT:
-router.put('/task/:id', async (req, res) => {
+router.put('/:id', async (req, res) => {
   let {content, done, date, deadline, priority} = req.body;
   try {
       const foundTask = await Task.findById(req.params.id);
@@ -84,13 +80,13 @@ router.put('/:id', async (req, res) => {
     await foundTask.save(); //save to DB
     res.status(201).json(foundTask); //send back to frontend  
   } catch (err) {
-    console.error('PUT /task/:id error:', err);
+    console.error('PUT /:id error:', err);
     res.status(400).json({message: 'failed to mark task as done', error:err.message})
   }
 });
 
 //delete ALL tasks (clear all request)
-router.delete('/task', async (req, res) => {
+router.delete('/', async (req, res) => {
   try {
     const result = await Task.deleteMany({})
     res.status(200).send({message: 'All tasks cleared'});

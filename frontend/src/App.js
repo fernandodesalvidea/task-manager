@@ -36,7 +36,7 @@ export default function App(){
   }
 
   function addTask(){
-    axios.post('http://localhost:4000/task', 
+    axios.post('http://localhost:4000/api/task', 
     {
       content: newTaskContent,
       priority: taskPriority
@@ -58,7 +58,7 @@ export default function App(){
   //this gets all the tasks from our backend
   useEffect(() => {
     if(isLoggedIn){
-      axios.get("http://localhost:4000/task", {
+      axios.get("http://localhost:4000/api/task", {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
       }
@@ -77,7 +77,7 @@ export default function App(){
   }
 
 function handleDelete(id){
-  axios.delete(`http://localhost:4000/task/${id}`)
+  axios.delete(`http://localhost:4000/api/task/${id}`)
   .then(() => {
     setTask(tasks.filter(task => task._id !== id)) //create a new array with all tasks except that one
   })
@@ -87,7 +87,7 @@ function handleDelete(id){
 }
 
 function handleEdit(id, content, priority){
-  axios.put(`http://localhost:4000/task/${id}`, {content, priority})
+  axios.put(`http://localhost:4000/api/task/${id}`, {content, priority})
   .then(res => {
     //create a new array with that updated task
     const updatedTasks = tasks.map(task => {
@@ -124,7 +124,7 @@ function handleComplete(id){
 }
 
 function clearTasks(){
-  axios.delete(`http://localhost:4000/task`)
+  axios.delete(`http://localhost:4000/api/task`)
   .then(() => setTask([]))
   .catch(err => console.error('could not clear all tasks', err))
 }
