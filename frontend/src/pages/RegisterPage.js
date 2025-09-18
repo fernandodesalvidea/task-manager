@@ -1,8 +1,7 @@
 import '../styles/RegisterPage.css';
-import React, { useEffect } from 'react';
 import { useState } from 'react';
 import axios from 'axios';
-
+const API_URL = process.env.REACT_APP_API_URL;
 
 function RegisterPage({onLoginSuccess, switchToLogin}){
    const [email, setEmail] = useState("")
@@ -13,7 +12,7 @@ function RegisterPage({onLoginSuccess, switchToLogin}){
         e.preventDefault();
 
         try {
-            const response = await axios.post('https://momentum-3huo.onrender.com/api/user/register', {email, password});
+            const response = await axios.post(`${API_URL}api/user/register`, {email, password});
 
             if(response.status === 201){
                 alert('Registration successful! Please log in');

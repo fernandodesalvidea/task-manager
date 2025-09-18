@@ -23,7 +23,7 @@ router.post('/', authenticateToken, async (req, res) => {
       content: req.body.content,
       date: Date.now(),
       priority: req.body.priority,
-      userId: req.user._id || req.user.id
+      userId: req.user.id
       
     });
     await newTask.save(); //save to DB
@@ -47,41 +47,39 @@ router.delete('/:id', async (req, res) => {
   }
 })
 
-//edit a task - PUT:
-router.put('/:id', async (req, res) => {
-  let {content, done, date, deadline, priority} = req.body;
+// EDIT TASK
+router.put('/:id/edit', authenticateToken, async (req, res) => {
+  const { content, done, priority } = req.body;
+
   try {
-      const foundTask = await Task.findById(req.params.id);
-      if(!foundTask){
-        return res.status(404).send('not found');
-      }
-      if(content !== undefined)foundTask.content = req.body.content;
-      if(done !== undefined)foundTask.done = done
-      if(date !== undefined)foundTask.date = date
-      if(deadline !== undefined)foundTask.deadline = deadline
-      if(priority !== undefined)foundTask.priority = priority
-      
-      await foundTask.save();//save to our DB
-      res.status(201).json(foundTask); //send updated task back to the client
-    }
-    catch (err) {
-    res.status(400).json({message: 'failed to edit task', error: err.message});
+    const foundTask = await Task.findById(req.params.id);
+    if (!foundTask) return res.status(404).json({ message: 'Task not found' });
+
+    if (content !== undefined) foundTask.content = content;
+    if (done !== undefined) foundTask.done = done;
+    if (priority !== undefined) foundTask.priority = priority;
+
+    await foundTask.save();
+    res.status(200).json(foundTask);
+  } catch (err) {
+    console.error('PUT /:id/edit error:', err);
+    res.status(500).json({ message: 'Failed to edit task', error: err.message });
   }
 });
 
-//mark the task as complete:
-router.put('/:id', async (req, res) => {
+// COMPLETE TASK
+router.put('/:id/complete', authenticateToken, async (req, res) => {
   try {
-    const foundTask = await Task.findById(req.params.id); //find task in the db
-    if(!foundTask){
-      return res.status(400).send('not foundTask');
-    }
+    const foundTask = await Task.findById(req.params.id);
+    if (!foundTask) return res.status(404).json({ message: 'Task not found' });
+
     foundTask.done = true;
-    await foundTask.save(); //save to DB
-    res.status(201).json(foundTask); //send back to frontend  
+    await foundTask.save();
+
+    res.status(200).json(foundTask);
   } catch (err) {
-    console.error('PUT /:id error:', err);
-    res.status(400).json({message: 'failed to mark task as done', error:err.message})
+    console.error('PUT /:id/complete error:', err);
+    res.status(500).json({ message: 'Failed to complete task', error: err.message });
   }
 });
 
@@ -96,17 +94,25 @@ router.delete('/', async (req, res) => {
 })
 
 function authenticateToken(req, res, next){
-    const authHeader = req.headers['authorization']; //grab value of "Authorization" header
-    const token = authHeader && authHeader.split(' ')[1]; //splits <Bearer> <token>, grab token
+    const authHeader = req.headers['authorization'];
+    const token = authHeader && authHeader.split(' ')[1];
 
-    if(token == null) return res.sendStatus(401); //no token? user not authorized access
+    console.log("🔎 Incoming Auth Header:", authHeader);
+
+    if (token == null) {
+        console.log("❌ No token found");
+        return res.sendStatus(401);
+    }
 
     jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-        if (err) console.error("JWT verification error:", err);
-        if(err) return res.status(403); //token invalid or forbidden
-        req.user = user; // attach decoded token payload (id, email) to req.user
-        //that way, later routes can use it
+        if (err) {
+            console.error("❌ JWT verification error:", err.message);
+            return res.sendStatus(403);
+        }
+        console.log("✅ Token verified. Decoded user:", user);
+        req.user = user;
         next();
     });
 }
+
 module.exports = router;

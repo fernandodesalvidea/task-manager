@@ -12,14 +12,12 @@ const app = express(); //create the server instance
 app.use(cors()); // allows all origins
 app.use(express.json())
 
-//app.use('/', taskRoutes, userRoutes);
-
-// Serve static files from the React app
-app.use(express.static(path.join(__dirname, '../frontend/build')));
-
+//register api routes
 app.use('/api/task', taskRoutes);
 app.use('/api/user', userRoutes)
 
+// Serve static files from the React app
+app.use(express.static(path.join(__dirname, '../frontend/build')));
 
 // For any route not handled by your API, send back React's index.html
 app.get('*', (req, res) => {

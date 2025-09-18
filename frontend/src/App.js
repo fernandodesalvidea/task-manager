@@ -10,6 +10,9 @@ import axios from 'axios';
 import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 
+const API_URL = process.env.REACT_APP_API_URL;
+
+
 export default function App(){
   //state variables
   const [tasks, setTask] = useState([]);
@@ -36,7 +39,7 @@ export default function App(){
   }
 
   function addTask(){
-    axios.post('https://momentum-3huo.onrender.com/api/task', 
+    axios.post(`${API_URL}/api/task`, 
     {
       content: newTaskContent,
       priority: taskPriority
@@ -58,7 +61,7 @@ export default function App(){
   //this gets all the tasks from our backend
   useEffect(() => {
     if(isLoggedIn){
-      axios.get("https://momentum-3huo.onrender.com/api/task", {
+      axios.get(`${API_URL}/api/task`, {
       headers: {
         Authorization: `Bearer ${localStorage.getItem("token")}`
       }
@@ -77,7 +80,7 @@ export default function App(){
   }
 
 function handleDelete(id){
-  axios.delete(`https://momentum-3huo.onrender.com/api/task/${id}`)
+  axios.delete(`${API_URL}/api/task/${id}`)
   .then(() => {
     setTask(tasks.filter(task => task._id !== id)) //create a new array with all tasks except that one
   })
@@ -87,7 +90,12 @@ function handleDelete(id){
 }
 
 function handleEdit(id, content, priority){
-  axios.put(`https://momentum-3huo.onrender.com/api/task/${id}`, {content, priority})
+
+  axios.put(
+    `${API_URL}/api/task/${id}/edit`,
+    { content, priority },
+    { headers: { Authorization: `Bearer ${localStorage.getItem("token")}` } }
+  )
   .then(res => {
     //create a new array with that updated task
     const updatedTasks = tasks.map(task => {
@@ -101,13 +109,18 @@ function handleEdit(id, content, priority){
     )
     setTask(updatedTasks); //update in React
   })
-  .catch(err => {
-    console.error('could not edit task', err);
-  })
+ .catch(err => {
+  if (err.response) {
+    console.error("❌ Server responded with:", err.response.status, err.response.data);
+  } else {
+    console.error("❌ Request error:", err.message);
+  }
+});
+
 }
 //handler which gets called from when user clicks done checkmark, id gets passed from TaskList
 function handleComplete(id){
-  axios.put(`https://momentum-3huo.onrender.com/api/task/${id}`, {}, {
+  axios.put(`${API_URL}/api/task/${id}/complete`, {}, {
     headers: {
       Authorization: `Bearer ${localStorage.getItem("token")}`
     }
@@ -128,7 +141,7 @@ function handleComplete(id){
 }
 
 function clearTasks(){
-  axios.delete(`https://momentum-3huo.onrender.com/api/task`)
+  axios.delete(`${API_URL}/api/task`)
   .then(() => setTask([]))
   .catch(err => console.error('could not clear all tasks', err))
 }
