@@ -107,7 +107,11 @@ function handleEdit(id, content, priority){
 }
 //handler which gets called from when user clicks done checkmark, id gets passed from TaskList
 function handleComplete(id){
-  axios.put(`https://momentum-3huo.onrender.com/api/task/${id}`)
+  axios.put(`https://momentum-3huo.onrender.com/api/task/${id}`, {}, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`
+    }
+  })
  
   .then(res => {
     const checkedTasks = tasks.map(task => { //make a new array
