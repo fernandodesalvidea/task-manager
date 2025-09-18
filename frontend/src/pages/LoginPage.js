@@ -19,7 +19,7 @@ function LoginPage({onLoginSuccess, switchToRegister}){
         e.preventDefault();
 
         try {
-            const response = await axios.post('http://localhost:4000/api/user/login', {
+            const response = await axios.post('https://momentum-3huo.onrender.com/api/user/login', {
                 email: email,
                 password: password
             });
