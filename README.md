@@ -43,7 +43,7 @@ Styling: CSS Modules
 Follow these steps to run the project locally:
 
 # 1. Clone the repository
-git clone https://github.com/yourusername/momentum-task-manager.git
+git clone https://github.com/fernandodesalvidea/momentum-task-manager.git
 cd momentum-task-manager
 
 # 2. Backend Setup
