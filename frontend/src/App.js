@@ -252,7 +252,6 @@ function handleLogout() {
         message="Warning: this will delete all tasks. Are you sure you want to proceed?"
       />
     )}
-    <button onClick={handleLogout}>Logout</button>
 
     </>
   );
